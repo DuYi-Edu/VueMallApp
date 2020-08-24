@@ -6,7 +6,7 @@ module.exports = {
             postcss: {
                 plugins: [
                     px2rem({
-                        remUnit: 75
+                        remUnit: 37.5
                     })
                 ]
             }
