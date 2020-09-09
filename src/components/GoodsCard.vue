@@ -10,13 +10,30 @@
          <div v-for="i in tags" :key="i">{{ i }}</div>
        </div>
        <div class="prices">￥{{ price }}</div>
+       <div class="counter">
+         <div @touchend="counter(id, -1)" v-if="num">
+           <img src="https://duyi-bucket.oss-cn-beijing.aliyuncs.com/img/rec.png" alt="">
+         </div>
+         <div class="num" v-if="num">{{ num }}</div>
+         <div @touchend="counter(id, 1)">
+           <img src="https://duyi-bucket.oss-cn-beijing.aliyuncs.com/img/add.png" alt="">
+         </div>
+       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
-  props: ['images', 'tags', 'title', 'price', 'desc'],
+  props: ['images', 'tags', 'title', 'price', 'desc', 'id', 'num'],
+  methods: {
+    ...mapMutations(['storageChange']),
+    counter(id, num) {
+      this.storageChange({ id, value: num });
+    },
+  },
 };
 </script>
 
@@ -66,6 +83,26 @@ export default {
         font-size: 14px;
         font-weight: 600;
         margin-top: 4px;
+      }
+      .counter {
+        position: absolute;
+        bottom: 12px;
+        right: 15px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        > div:not(.num) {
+          width: 16px;
+          height: 16px;
+          img {
+            width: 100%
+          }
+        }
+        .num {
+          padding: 0 5px;
+          height: 22px;
+          line-height: 22px;
+        }
       }
     }
   }

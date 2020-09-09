@@ -11,8 +11,24 @@ export default new Vuex.Store({
     size: 5,
     goodsList: [],
     type: null,
+    counterMap: {},
   },
   mutations: {
+    storageChange(state, { id, value }) {
+      if (state.counterMap[id]) {
+        if (value === -1 && state.counterMap[id] === 1) {
+          Vue.delete(state.counterMap, id);
+        } else {
+          Vue.set(state.counterMap, id, state.counterMap[id] + value);
+        }
+      } else {
+        Vue.set(state.counterMap, id, 1);
+      }
+      localStorage.setItem('goods', JSON.stringify(state.counterMap));
+    },
+    setCounterMap(state, map) {
+      state.counterMap = map;
+    },
     setSideList(state, list) {
       state.sideList = list;
     },
