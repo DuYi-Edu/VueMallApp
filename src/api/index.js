@@ -16,6 +16,16 @@ const getSideList = (type) => request.get(
   { params: { type } },
 );
 
+const getGoodsList = (type, page, size, sort) => request.get(
+  URLS.getGoodsList,
+  {
+    params: {
+      type, size, sort, page,
+    },
+  },
+);
+
 export default {
   getSideList,
+  getGoodsList,
 };

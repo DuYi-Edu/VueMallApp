@@ -5,18 +5,30 @@
       <div>苹果特价1元1斤</div>
     </div>
     <one-tab></one-tab>
-    <side-bar></side-bar>
+    <template v-if="showContent">
+      <side-bar></side-bar>
+      <goods-list></goods-list>
+    </template>
+    <van-loading size="2rem" vertical v-else />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import oneTab from '../components/OneTab.vue';
 import sideBar from '../components/SideBar.vue';
+import goodsList from '../components/GoodsList.vue';
 
 export default {
+  computed: {
+    ...mapState({
+      showContent: (state) => state.showContent,
+    }),
+  },
   components: {
     oneTab,
     sideBar,
+    goodsList,
   },
 };
 </script>
