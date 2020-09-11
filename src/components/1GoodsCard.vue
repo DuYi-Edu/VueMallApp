@@ -11,12 +11,12 @@
        </div>
        <div class="prices">￥{{ price }}</div>
        <div class="counter">
-         <div v-if="num" @touchend="counter(id, -1)">
-           <img src="https://duyi-bucket.oss-cn-beijing.aliyuncs.com/img/rec.png">
+         <div @touchend="counter(id, -1)" v-if="num">
+           <img src="https://duyi-bucket.oss-cn-beijing.aliyuncs.com/img/rec.png" alt="">
          </div>
-         <div class="num" v-if="num" >{{ num }}</div>
+         <div class="num" v-if="num">{{ num }}</div>
          <div @touchend="counter(id, 1)">
-           <img src="https://duyi-bucket.oss-cn-beijing.aliyuncs.com/img/add.png">
+           <img src="https://duyi-bucket.oss-cn-beijing.aliyuncs.com/img/add.png" alt="">
          </div>
        </div>
     </div>
@@ -28,32 +28,31 @@ import { mapMutations } from 'vuex';
 import Animate from '../tools/animate';
 
 export default {
-  props: ['images', 'tags', 'title', 'price', 'desc', 'num', 'id'],
+  props: ['images', 'tags', 'title', 'price', 'desc', 'id', 'num'],
   methods: {
     ...mapMutations(['storageChange']),
     counter(id, num) {
       this.storageChange({ id, value: num });
-      if (num === -1) {
-        return;
-      }
+      // 图片的位置
       const { top, left } = this.$refs.img.getBoundingClientRect();
-      const img = document.getElementById('shop-car');
-      const { left: imgX, top: imgY } = img.getBoundingClientRect();
-      const { offsetWidth, offsetHeight } = img;
-      const { offsetHeight: height, offsetWidth: width } = this.$refs.img;
-      const endX = imgX + offsetWidth / 2;
-      const endY = imgY + offsetHeight / 2;
+      const { offsetWidth: imgWidth, offsetHeight: imgHeight } = this.$refs.img;
+      const shopCar = document.getElementById('shop-car');
+      // 购物车的位置
+      const { left: carX, top: carY } = shopCar.getBoundingClientRect();
+      // 购物车的大小
+      const { offsetWidth: carWidth, offsetHeight: carHeight } = shopCar;
+      const endX = carX + carHeight / 2;
+      const endY = carY + carWidth / 2;
       Animate({
         startX: left,
         startY: top,
         endX,
         endY,
         src: this.$refs.img.src,
-        width,
-        height,
+        width: imgWidth,
+        height: imgHeight,
       });
     },
-
   },
 };
 </script>
@@ -105,26 +104,26 @@ export default {
         font-weight: 600;
         margin-top: 4px;
       }
-       .counter {
-      display: flex;
-      position: absolute;
-      bottom: 12px;
-      right: 15px;
-      justify-content: flex-end;
-      align-items: center;
-      > div:not(.num) {
-        width: 16px;
-        height: 16px;
-        img {
-          width: 100%;
+      .counter {
+        position: absolute;
+        bottom: 12px;
+        right: 15px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        > div:not(.num) {
+          width: 16px;
+          height: 16px;
+          img {
+            width: 100%
+          }
+        }
+        .num {
+          padding: 0 5px;
+          height: 22px;
+          line-height: 22px;
         }
       }
-      .num {
-        padding:0 5px;
-        height: 22px;
-        line-height: 22px;
-      }
-    }
     }
   }
   .overflow-hidden {
