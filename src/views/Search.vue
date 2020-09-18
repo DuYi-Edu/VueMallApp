@@ -1,7 +1,7 @@
 <template>
   <div class="search-wrapper">
    <div class="search-head">
-     <van-icon name="arrow-left" class="arr-left" />
+     <van-icon name="arrow-left" class="arr-left" @click="$router.goBack()" />
      <van-search
      class="search-content"
     v-model="value"
@@ -53,16 +53,21 @@
           ></goods-card>
         </van-list>
    </div>
+   <div class="my-history" v-if="likeList.length <= 0 && showList">
+     <my-history :searchList="searchList" @search="onSearch"></my-history>
+   </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import goodsCard from '../components/GoodsCard.vue';
+import myHistory from '../components/MyHistory.vue';
 
 export default {
   components: {
     goodsCard,
+    myHistory,
   },
   data() {
     return {
@@ -77,6 +82,7 @@ export default {
       goodsList: [],
       showList: true,
       total: 0,
+      searchList: [],
     };
   },
   computed: {
@@ -109,6 +115,17 @@ export default {
       } else {
         this.value = this.place;
       }
+      const result = this.searchList.find((item) => item.value === this.value);
+      if (result) {
+        result.time = new Date().getTime();
+        this.searchList.sort((a, b) => b.time - a.time);
+      } else {
+        this.searchList.unshift({ value: this.value, time: new Date().getTime() });
+        if (this.searchList.length >= 11) {
+          this.searchList.pop();
+        }
+      }
+      localStorage.setItem('searchList', JSON.stringify(this.searchList));
       this.likeList = [];
       this.goodsList = [];
       this.page = 1;
@@ -141,6 +158,9 @@ export default {
       const reg = new RegExp(this.value, 'g');
       return item.replace(reg, this.value.fontcolor('red'));
     },
+  },
+  created() {
+    this.searchList = JSON.parse(localStorage.getItem('searchList')) || [];
   },
 };
 </script>
@@ -184,6 +204,13 @@ export default {
       margin: 48px auto 0;
       z-index: 10;
       background: #fff;
+    }
+    .my-history {
+      width: 350px;
+      position: absolute;
+      top: 35px;
+      left: 10px;
+      z-index: 1;
     }
   }
 </style>

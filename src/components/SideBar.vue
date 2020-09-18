@@ -51,8 +51,8 @@ export default {
     },
   },
   mounted() {
-    this.resetGoodsList();
-    this.getGoodsList({ type: this.sideList[0], page: 1, sortType: 'all' });
+    // this.resetGoodsList();
+    // this.getGoodsList({ type: this.sideList[0], page: 1, sortType: 'all' });
   },
 };
 </script>
