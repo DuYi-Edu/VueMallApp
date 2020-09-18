@@ -1,9 +1,9 @@
 <template>
   <div class="classify-wrapper">
-    <div class="search-btn">
+    <router-link class="search-btn" tag="div" to="/search">
       <van-icon name="search" />
       <div>苹果特价1元1斤</div>
-    </div>
+    </router-link>
     <one-tab></one-tab>
     <template v-if="showContent">
       <side-bar></side-bar>
