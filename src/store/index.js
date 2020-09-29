@@ -16,7 +16,7 @@ export default new Vuex.Store({
   mutations: {
     storageChange(state, { id, value }) {
       if (state.counterMap[id]) {
-        if (value === -1 && state.counterMap[id] === 1) {
+        if ((value === -1 && state.counterMap[id] === 1) || value === -Infinity) {
           Vue.delete(state.counterMap, id);
         } else {
           Vue.set(state.counterMap, id, state.counterMap[id] + value);
